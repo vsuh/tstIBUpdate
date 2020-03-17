@@ -21,3 +21,5 @@ if .%errorlevel%.==.0. (
 	type %temp%\check-rac.txt>>%Prt%
         2>nul echo "при проверке deployka">~ER~
 )
+
+taskkill /t /f /im 1cv8.exe

@@ -17,8 +17,9 @@ if not exist %exe1c% (
 	exit 4
 )
 
-::SET LOGOS_CONFIG=logger.rootLogger=DEBUG
-CALL deployka session kill %dpl% -lockuccode 0008 -with-nolock yes
+:: после 7:00 сессии не отключать
+Set /a h=%time:~0,2% + 1
+if %h% LSS 8 CALL deployka session kill %dpl% -lockuccode 0008 -with-nolock yes
 %exe1c% %prmSt% 
 
 Set error=%errorlevel%
