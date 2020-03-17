@@ -1,0 +1,10 @@
+#
+Prt=PRT.ERR
+exe1c=d:\myProgramFiles\1cv8\8.3.12.1616\bin\1cv8.exe
+dpl= -ras SRV-1C -db ibuh -rac D:\myProgramFiles\1cv8\8.3.12.1616\bin\rac.exe -cluster-admin superadmin -cluster-pwd XXXXXXXXX -db-user ibsuper -db-pwd %C1.ibuh.password%
+beg=%time%
+connSloc=/IBConnectionString File=D:\bases\buh;
+connSoru=/IBConnectionString Srvr=SRV-1C;Ref=ibuh;
+dtStore=\\10.ее.ее.ее\Backups\1C_BACKUPS\ibuh
+LOGOS_CONFIG=logger.rootLogger=ERROR
+
