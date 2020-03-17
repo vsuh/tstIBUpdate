@@ -3,6 +3,7 @@ setlocal enabledelayedexpansion
 FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
 Set vb=vb.vbs
+Set out=j.json
 
 echo on
 call :createVBS %vb%
@@ -26,17 +27,24 @@ For /F "delims=" %%i In (%Prt%) Do @if NOT z%%i==z Set txt=!txt!^<li^>%%i
 ::Set txt=^<li^> first^<li^> second
 
 copy %Prt% %temp%\prt.txt>nul
-call sendmail.vbs ^
+call %vb% ^
 	/mailto:"VSukhikh@gmail.com"^
         /Subject:"%date% обновление mc_bnu_oru"^
         /BodyText:"%txt%"^
 	/Attach:%temp%\prt.txt
+chcp 65001>nul
+echo {"value1": "%txt:#=<br>%"} >%out%
 
-@echo on
+@echo ######### ERROR: %errorlevel% ##########
 @echo -------------------------------
 @echo "%txt%"
 @echo -------------------------------
+del %vb%
 
+if exist %out% (
+	curl -X POST -H "Content-Type: application/json" -d @j.json "https://maker.ifttt.com/trigger/OBRrefreshing/with/key/cd7VHzgV9MijmevbaKNDEx"
+)
+exit
 :createVBS
 2>nul md>%1
 @echo Dim OutLookApp		>>%1
