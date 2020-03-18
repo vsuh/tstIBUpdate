@@ -12,6 +12,7 @@ del PRT.ERR >nul 2>&1
 echo %DATE% %TIME% Обновление ИБ MC_BNU_ORU>%Prt%
 @for %%I in (%dtStore%\*.dt) do @Set dt=%%I
 
+echo %date% %time% копирование %dt% bnu.dt
 copy %dt% bnu.dt || echo "copy %dt% to bnu.dt">~ER~
 
 ovm r stable deployka info %dpl%>%temp%\check-rac.txt

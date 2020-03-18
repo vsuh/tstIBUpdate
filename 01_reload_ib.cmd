@@ -27,14 +27,14 @@ if not exist %exe1c% (
 )
 
 echo %date% %time% Начало загрузки %dt% > %tmpLog%
-echo %connS% >> %tmpLog%
-timeout 1
+echo %connSloc% >> %tmpLog%
+timeout 1 >nul
 
-echo %date% %time% загрузка DT в %connS%
+echo %date% %time% загрузка DT в %connSloc%
 %exe1c% %prmSt% 
 
 Set /a error=errorlevel
-timeout 5
+timeout 5 >nul
 echo %date% %time% Загрузка завершена >> %tmpLog%
 
 ::cls&echo.&echo.&echo.&echo.&echo.&echo.&

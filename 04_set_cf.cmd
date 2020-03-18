@@ -20,7 +20,7 @@ timeout 1
 echo %date% %time% принятие изменений конфигурации в %connSloc%
 %exe1c% %prmSt% 
 Set /a error=errorlevel
-timeout 5
+timeout 5 >nul
 echo %date% %time% Завершено >> %tmpLog%
 
 echo.&echo.&echo.&echo.&echo.&echo.

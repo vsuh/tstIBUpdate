@@ -3,4 +3,5 @@
 *.log
 ~*~
 _CFG_
+*.dt
 settings.ini  
