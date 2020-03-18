@@ -1,4 +1,4 @@
-@echo on
+@echo off
 setlocal enabledelayedexpansion
 FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
@@ -17,5 +17,6 @@ for %%I in (??_*.cmd) do (
 	timeout /t 5
 	) 
 
+if exist ~ER~ call finish.cmd
 
 :: todo: отправлять ошибки в телеграм

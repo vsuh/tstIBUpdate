@@ -2,10 +2,10 @@
 setlocal enabledelayedexpansion
 FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
+if exist ~ER~ exit
 
 Set tmpLog=%temp%\LOG.LOG
-Set connS=/IBConnectionString File=D:\bases\KUCY;
-Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /UpdateDBCfg /Out %tmpLog%
+Set prmSt=DESIGNER %connSloc% /nmaster /p"%C1.password%" /UpdateDBCfg /Out %tmpLog%
 if NOT defined beg=%time%
 
 
@@ -16,6 +16,8 @@ if not exist %exe1c% (
 	exit 4
 )
 timeout 1
+
+echo %date% %time% принятие изменений конфигурации в %connSloc%
 %exe1c% %prmSt% 
 Set /a error=errorlevel
 timeout 5

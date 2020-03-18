@@ -3,10 +3,11 @@ setlocal enabledelayedexpansion
 FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
 
+if exist ~ER~ exit
 @for %%I in (*.dt) do @Set dt=%%I
-Set connS=/IBConnectionString File=D:\bases\KUCY;
+
 Set tmpLog=%temp%\dtloading.log
-Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /RestoreIB %dt% /Out %tmpLog%
+Set prmSt=DESIGNER %connSloc% /nmaster /p"%C1.password%" /RestoreIB %dt% /Out %tmpLog%
 Set Log=%temp%\LOG.LOG
 if NOT defined beg=%time%
 
@@ -25,16 +26,16 @@ if not exist %exe1c% (
 	exit 4
 )
 
-echo %date% %time% Начало загрузки %dt% > %Log%
-echo %connS% >> %Log%
+echo %date% %time% Начало загрузки %dt% > %tmpLog%
+echo %connS% >> %tmpLog%
 timeout 1
 
-
+echo %date% %time% загрузка DT в %connS%
 %exe1c% %prmSt% 
 
 Set /a error=errorlevel
 timeout 5
-echo %date% %time% Загрузка завершена >> %Log%
+echo %date% %time% Загрузка завершена >> %tmpLog%
 
 ::cls&echo.&echo.&echo.&echo.&echo.&echo.&
 chcp 866>nul
@@ -43,7 +44,7 @@ type %tmpLog%
 echo %esc%[35;40m===== %time% ====%esc%[0;0m %esc%[93;40mEND%esc%[0;0m %esc%[35;40m========================%esc%[0;0m
 echo.
 if %error% NEQ 0 (
-	type %Log%>>%Prt%
+	type %tmpLog%>>%Prt%
 	echo %date% %time% ошибка при загрузке DT>~ER~
 	type %tmpLog% >>~ER~
 	)

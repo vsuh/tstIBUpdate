@@ -2,10 +2,10 @@
 setlocal enabledelayedexpansion
 FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
+if exist ~ER~ exit
 
 Set tmpLog=%temp%\cfLoad.LOG
-Set connS=/IBConnectionString File=D:\bases\KUCY;
-Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /LoadCfg _CFG_ /Out %tmpLog%
+Set prmSt=DESIGNER %connSloc% /nmaster /p"%C1.password%" /LoadCfg _CFG_ /Out %tmpLog%
 if NOT defined beg=%time%
 
 if not exist _CFG_ (
@@ -24,6 +24,8 @@ if not exist %exe1c% (
 
 call deployka session kill %dpl% -lockuccode 0008 -lockstartat 0
 timeout 1
+
+echo %date% %time% загрузка конфигурации в %connSloc%
 %exe1c% %prmSt% 
 Set /a error=errorlevel
 timeout 5
