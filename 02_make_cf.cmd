@@ -6,7 +6,8 @@ chcp 1251>nul
 Set Log=%temp%\LOG.LOG
 Set exe1c="d:\myProgramFiles\1cv8\8.3.12.1616\bin\1cv8.exe"
 Set connS=/IBConnectionString Srvr=obr-app-13;Ref=mc_bnu_oru;
-Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /DumpCfg _CFG_ /Out %Log%
+Set tmpLog=%temp%\cfDumping.log
+Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /DumpCfg _CFG_ /Out %tmpLog%
 
 if NOT defined beg=%time%
 
@@ -22,7 +23,7 @@ Set /a h=%time:~0,2% + 1
 if %h% LSS 8 CALL deployka session kill %dpl% -lockuccode 0008 -with-nolock yes
 %exe1c% %prmSt% 
 
-Set error=%errorlevel%
+Set /a error=errorlevel
 timeout 5
 echo %date% %time% Завершено >> %Log%
 
@@ -30,11 +31,12 @@ echo %date% %time% Завершено >> %Log%
 echo.&echo.&echo.&echo.&echo.&echo.
 
 echo %esc%[35;40m===== %beg% ====%esc%[0;0m %esc%[93;40mLOG%esc%[0;0m %esc%[35;40m========================%esc%[90;40m
-type %Log%
+type %tmpLog%
 echo %esc%[35;40m===== %time% ====%esc%[0;0m %esc%[93;40mEND%esc%[0;0m %esc%[35;40m========================%esc%[0;0m
 echo.
-if NOT .%error%.==.. (
-	type %Log%>>%Prt%
+if %error% NEQ 0 (
+	type %tmpLog%>>%Prt%
 	2>nul echo "создание CF файла (%0)">~ER~
+	type %tmpLog%>>~ER~
 	)
 

@@ -7,12 +7,12 @@ call deployka run /fKUCY^
 	 -db-user master -db-pwd %C1.password%^
 	 -uccode 0008^
 	 -command "ЗаголовокСистемы;лок.Копия.ОРУ"^
-	 -v8version "18.3.12.1616"^
+	 -v8version "8.3.12.1616"^
 	 -additional "/RunModeOrdinaryApplication /UsePrivilegedMode /DisableStartupMessages /DisableStartupDialogs /ClearCache /AllowExecuteScheduledJobs -Off"^
 	 >%err%
 
-if NOT .%errorlevel%.==.0. (
+if %errorlevel% NEQ 0 (
 	type %err%>>%Prt% && del %err%
-	) else (
-	2>nul rd>~OK~
-	)
+) else (
+	2>nul md>~OK~
+)

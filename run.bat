@@ -10,6 +10,7 @@ for %%I in (??_*.cmd) do (
 
 	if exist ~ER~ (
 		@echo %DATE% %TIME% flag exit defined
+		call finish.cmd
 		@exit
 	)
 	@echo %DATE% %TIME% ^>^>^> [%errorlevel%] Выполнен батфайл %%I

@@ -5,7 +5,8 @@ chcp 1251>nul
 
 @for %%I in (*.dt) do @Set dt=%%I
 Set connS=/IBConnectionString File=D:\bases\KUCY;
-Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /RestoreIB %dt% /Out %Log%
+Set tmpLog=%temp%\dtloading.log
+Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /RestoreIB %dt% /Out %tmpLog%
 Set Log=%temp%\LOG.LOG
 if NOT defined beg=%time%
 
@@ -31,17 +32,18 @@ timeout 1
 
 %exe1c% %prmSt% 
 
-Set error=%errorlevel%
+Set /a error=errorlevel
 timeout 5
 echo %date% %time% Загрузка завершена >> %Log%
 
 ::cls&echo.&echo.&echo.&echo.&echo.&echo.&
 chcp 866>nul
 echo %esc%[35;40m===== %beg% ====%esc%[0;0m %esc%[93;40mLOG%esc%[0;0m %esc%[35;40m========================%esc%[90;40m
-type %Log%
+type %tmpLog%
 echo %esc%[35;40m===== %time% ====%esc%[0;0m %esc%[93;40mEND%esc%[0;0m %esc%[35;40m========================%esc%[0;0m
 echo.
-if NOT .%error%.==.. (
+if %error% NEQ 0 (
 	type %Log%>>%Prt%
-	2>nul echo "при загрузке DT">~ER~
+	echo %date% %time% ошибка при загрузке DT>~ER~
+	type %tmpLog% >>~ER~
 	)

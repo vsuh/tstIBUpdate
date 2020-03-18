@@ -3,9 +3,9 @@ setlocal enabledelayedexpansion
 FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
 
-Set Log=%temp%\LOG.LOG
+Set tmpLog=%temp%\LOG.LOG
 Set connS=/IBConnectionString File=D:\bases\KUCY;
-Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /UpdateDBCfg /Out %Log%
+Set prmSt=DESIGNER %connS% /nmaster /p"%C1.password%" /UpdateDBCfg /Out %tmpLog%
 if NOT defined beg=%time%
 
 
@@ -17,18 +17,19 @@ if not exist %exe1c% (
 )
 timeout 1
 %exe1c% %prmSt% 
-Set error=%errorlevel%
+Set /a error=errorlevel
 timeout 5
-echo %date% %time% Завершено >> %Log%
+echo %date% %time% Завершено >> %tmpLog%
 
 echo.&echo.&echo.&echo.&echo.&echo.
 
 echo %esc%[35;40m===== %beg% ====%esc%[0;0m %esc%[93;40mLOG%esc%[0;0m %esc%[35;40m========================%esc%[90;40m
-type %Log%
+type %tmpLog%
 echo %esc%[35;40m===== %time% ====%esc%[0;0m %esc%[93;40mEND%esc%[0;0m %esc%[35;40m========================%esc%[0;0m
 echo.
-if NOT .%error%.==.. (
-	type %Log%>>%Prt%
+if %error% NEQ 0 (
+	type %tmpLog%>>%Prt%
 	2>nul echo "при обновлении конфигурации">~ER~
+	type %tmpLog%>>~ER~
 	)
 
