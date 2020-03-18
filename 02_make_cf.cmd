@@ -1,4 +1,6 @@
 @echo off
+:: если передать параметр kill - сессии на серверной ИБ будут оборваны
+::
 setlocal enabledelayedexpansion
 FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
@@ -19,8 +21,8 @@ if not exist %exe1c% (
 
 :: после 7:00 сессии не отключать
 Set /a h=%time:~0,2% + 1
-if %h% LSS 8 CALL deployka session kill %dpl% -lockuccode 0008 -with-nolock yes
-
+if %h% LSS 8    CALL deployka session kill %dpl% -lockuccode 0008 -with-nolock yes
+if .%1.==.kill. CALL deployka session kill %dpl% -lockuccode 0008 -with-nolock yes
 echo %date% %time% выгрузка конфигурации из %connSoru%
 %exe1c% %prmSt% 
 
