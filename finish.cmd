@@ -5,8 +5,7 @@ chcp 1251>nul
 Set vb=vb.vbs
 Set out=j.json
 
-echo on
-call :createVBS %vb%
+
 
 if defined notify.err.only if exist ~OK~ exit
 
@@ -17,40 +16,32 @@ if NOT exist %Prt% exit
 if %NumStr% LSS 2 ( exit )
 
 
-Set txt=             
-
 For /F "delims=" %%i In (%Prt%) Do @if NOT z%%i==z Set txt=!txt!#%%i
 
-
-::Set txt="^^^<body^^^>^^^<ul^^^>!txt!^^^</ul^^^>^^^</body^^^>"
-
-::Set txt=^<li^> first^<li^> second
-
+call :createVBS %vb%
 copy %Prt% %temp%\prt.txt>nul
 call %vb% ^
 	/mailto:"VSukhikh@gmail.com"^
         /Subject:"%date% обновление mc_bnu_oru"^
         /BodyText:"%txt:#=<li>%"^
 	/Attach:%temp%\prt.txt
+@echo ######### ERROR: %errorlevel% ##########
+del %vb%
 
 
 
 chcp 65001>nul
-@Set txt=%txt:{=%
-@Set txt=%txt:}=%
+@Set txt=%txt:{=(%
+@Set txt=%txt:}=)%
 @Set txt=%txt:\=\\%
-echo {"value1": "%txt:#=<br>%"} >%out%
+echo {"value1": "%txt:#=<br><li> %"} >%out%
 
-@echo ######### ERROR: %errorlevel% ##########
-::@echo -------------------------------
-::@echo "%txt2%"
-::@echo -------------------------------
-del %vb%
 
 if exist %out% (
-	curl -X POST -H "Content-Type: application/json" -d @j.json "https://maker.ifttt.com/trigger/OBRrefreshing/with/key/cd7VHzgV9MijmevbaKNDEx"
+	curl -X POST -H "Content-Type: application/json" -d @%out% "https://maker.ifttt.com/trigger/OBRrefreshing/with/key/cd7VHzgV9MijmevbaKNDEx"
 )
-exit
+@echo. & @echo ######### ERROR: %errorlevel% ##########
+exit /b
 :createVBS
 2>nul md>%1
 @echo Dim OutLookApp		>>%1

@@ -40,8 +40,8 @@ echo %esc%[35;40m===== %beg% ====%esc%[0;0m %esc%[93;40mLOG%esc%[0;0m %esc%[35;4
 type %tmpLog%
 echo %esc%[35;40m===== %time% ====%esc%[0;0m %esc%[93;40mEND%esc%[0;0m %esc%[35;40m========================%esc%[0;0m
 ::---------------
-@for /f "usebackq" %%S in (`find /c /v ""^<"%tmpLog% "`) do @(set /a NumStr=%%S) 
-echo в файле %tmpLog% %NumStr% строк >>%Prt%
+::@for /f "usebackq" %%S in (`find /c /v ""^<"%tmpLog% "`) do @(set /a NumStr=%%S) 
+::echo в файле %tmpLog% %NumStr% строк >>%Prt%
 ::---------------
 
 echo.
