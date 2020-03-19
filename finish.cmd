@@ -8,8 +8,8 @@ Set out=j.json
 echo on
 call :createVBS %vb%
 
+if defined notify.err.only if exist ~OK~ exit
 
-if exist ~OK~ exit
 if NOT exist %Prt% exit
 
 @for /f "usebackq" %%S in (`find /c /v ""^<"%Prt% "`) do @(set /a NumStr=%%S) 
@@ -19,7 +19,7 @@ if %NumStr% LSS 2 ( exit )
 
 Set txt=             
 
-For /F "delims=" %%i In (%Prt%) Do @if NOT z%%i==z Set txt=!txt!^<li^>%%i
+For /F "delims=" %%i In (%Prt%) Do @if NOT z%%i==z Set txt=!txt!#%%i
 
 
 ::Set txt="^^^<body^^^>^^^<ul^^^>!txt!^^^</ul^^^>^^^</body^^^>"
@@ -30,15 +30,21 @@ copy %Prt% %temp%\prt.txt>nul
 call %vb% ^
 	/mailto:"VSukhikh@gmail.com"^
         /Subject:"%date% обновление mc_bnu_oru"^
-        /BodyText:"%txt%"^
+        /BodyText:"%txt:#=<li>%"^
 	/Attach:%temp%\prt.txt
+
+
+
 chcp 65001>nul
+@Set txt=%txt:{=%
+@Set txt=%txt:}=%
+@Set txt=%txt:\=\\%
 echo {"value1": "%txt:#=<br>%"} >%out%
 
 @echo ######### ERROR: %errorlevel% ##########
-@echo -------------------------------
-@echo "%txt%"
-@echo -------------------------------
+::@echo -------------------------------
+::@echo "%txt2%"
+::@echo -------------------------------
 del %vb%
 
 if exist %out% (
