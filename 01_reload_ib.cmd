@@ -4,7 +4,7 @@ FOR /F "eol=# tokens=*" %%I IN (Settings.ini) do set %%I
 chcp 1251>nul
 
 if exist ~ER~ exit
-@echo %date% %time% {%~nx0} копирование DT >>%Prt%
+@echo %date% %time% {%~nx0} загрузка DT файла в локальную ИБ >>%Prt%
 @for %%I in (*.dt) do @Set dt=%%I
 
 Set tmpLog=%temp%\dtloading.log

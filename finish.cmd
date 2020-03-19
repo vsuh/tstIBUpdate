@@ -41,6 +41,7 @@ if exist %out% (
 	curl -X POST -H "Content-Type: application/json" -d @%out% "https://maker.ifttt.com/trigger/OBRrefreshing/with/key/cd7VHzgV9MijmevbaKNDEx"
 )
 @echo. & @echo ######### ERROR: %errorlevel% ##########
+del %out%
 exit /b
 :createVBS
 2>nul md>%1
